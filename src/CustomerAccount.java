@@ -76,13 +76,50 @@ public class CustomerAccount implements Comparable
         return compare;
     }
 
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getSecondName()
+    {
+        return secondName;
+    }
+
+    public String getVehicle()
+    {
+        return this.vehicle.toString();
+    }
+
+    public int getAccountBalance()
+    {
+        return accountBalance;
+    }
+
+    public DiscountType getDiscountType()
+    {
+        return this.discountType;
+    }
+
     public static void main(String[] args)
     {
-        Car car = new Car("wk65eza", "Ford",5);
+        Car car1 = new Car("aaaaaaa", "Ford",5);
+        Car car2 = new Car("bbbbbbb", "Ford",5);
+
         CustomerAccount tom = new CustomerAccount("Tom",
                                                   "Mcloughlin",
-                                                  car,
+                                                  car1,
                                                   10000);
+
+        CustomerAccount matt = new CustomerAccount("Matthew",
+                                                   "Mcloughlin",
+                                                   car2,
+                                                   10000);
+
+        System.out.println(tom.compareTo(matt));
+        System.out.println(tom.getVehicle());
+        System.out.println(tom.getDiscountType());
+
         /*
         System.out.println(tom.vehicle.getReg());
         System.out.println(tom.vehicle.getMake());
@@ -100,6 +137,7 @@ public class CustomerAccount implements Comparable
         System.out.println(tom.makeTrip());
         tom.activateStaffDiscount();
         System.out.println(tom.discountType);
-        System.out.println(tom.makeTrip());*/
+        System.out.println(tom.makeTrip());
+        */
     }
 }
