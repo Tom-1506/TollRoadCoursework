@@ -5,8 +5,10 @@ import java.io.IOException;
 
 public class TollRoadMain
 {
-    public void initialiseTollRoadFromFile()
+    public TollRoad initialiseTollRoadFromFile()
     {
+        TollRoad newTollRoad = new TollRoad();
+
         String fileName = "customerData.txt";
 
         String line;
@@ -20,39 +22,50 @@ public class TollRoadMain
             {
                 String[] inCustomerData = line.split("#");
 
-                for (int i = 0; i == inCustomerData.length; i++)
+                for(int i = 0; i <= inCustomerData.length; i++)
                 {
                     String[] singleCustomerData = inCustomerData[i]
                                                     .split(",");
 
-                    
+                    String vehicleType = singleCustomerData[0];
+                    String regPlate = singleCustomerData[1];
+                    String firstName = singleCustomerData[2];
+                    String lastName = singleCustomerData[3];
+                    String vehicleMake = singleCustomerData[4];
+                    String vehicleInfo = singleCustomerData[5];
+                    String startingBalance = singleCustomerData[6];
+                    String discountType = singleCustomerData[7];
+
+                    if(vehicleType.equals("Car"))
+                    {
+                        Car newVehicle = new Car(regPlate,
+                                vehicleMake,
+                                Integer.parseInt(vehicleInfo));
+
+                        newTollRoad.addCustomer(firstName,
+                                lastName,
+                                newVehicle,
+                                Integer.parseInt(startingBalance));
+                    }
+                    else if(vehicleType.equals("Van"))
+                    {
+                        Van newVehicle = new Van(regPlate,
+                                vehicleMake,
+                                Integer.parseInt(vehicleInfo));
+                    }
+                    else if(vehicleType.equals("Truck"))
+                    {
+                        Truck newVehicle = new Truck(regPlate,
+                                vehicleMake,
+                                Integer.parseInt(vehicleInfo));
+                    }
+                    else
+                    {
+                        System.out.println("Invalid vehicle type");
+                        break;
+                    }
                 }
             }
-
-            /*
-            if (Character.isLetter(line.charAt(0)))
-            {
-                //then create an album using that line
-                String[] inAlbum = line.split(" : ");
-                String inArtist = inAlbum[0];
-                String inAlbumName = inAlbum[1];
-
-                newAlbum = new Album(inArtist, inAlbumName);
-                newAlbumCollection.albumArray.add(newAlbum);
-            }
-            //if the first character in the line is a number
-            else if (Character.isDigit(line.charAt(0)))
-            {
-                 create a track and add it to the
-                last made albums track array
-                String[] inTrack = line.split(" - ");
-                String inTime = inTrack[0];
-                String inTrackName = inTrack[1];
-
-                Track newTrack = new Track(inTime, inTrackName);
-                newAlbum.trackArray.add(newTrack);
-            }*/
-
 
             bufferedReader.close();
         }
