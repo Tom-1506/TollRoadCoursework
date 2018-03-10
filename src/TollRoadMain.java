@@ -104,17 +104,15 @@ public class TollRoadMain
 
             bufferedReader.close();
         }
-        catch (FileNotFoundException ex)
+        catch (FileNotFoundException e)
         {
             System.out.println("Unable to open file '" + fileName + "'");
         }
-        catch (IOException ex)
+        catch (IOException e)
         {
             System.out.println("Error reading file '" + fileName + "'");
         }
-
-        TollRoad testTollRoad = new TollRoad();
-        return testTollRoad;
+        return newTollRoad;
     }
 
     private CustomerAccount makeNewCustomer(String firstName, String lastName,
@@ -146,7 +144,86 @@ public class TollRoadMain
 
     public void simulateFromFile(TollRoad road)
     {
+        String fileName = "transactions.txt";
 
+        String line;
+
+        try
+        {
+            FileReader fileReader = new FileReader(fileName);
+
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            if((line = bufferedReader.readLine()) != null)
+            {
+                String[] inTransactions = line.split("\\$");
+
+                for(int i = 0; i < inTransactions.length; i++)
+                {
+                    String[] inSingleTransaction = inTransactions[i]
+                            .split(",");
+
+                    /*
+                    for(int j = 0; j < inSingleTransaction.length; j++)
+                    {
+                        System.out.println(inSingleTransaction[j]);
+                    }
+                    */
+
+                    String instruction = inSingleTransaction[0];
+                    String regPlate = inSingleTransaction[1];
+
+                    if(instruction.equals("addFunds"))
+                    {
+                        String amount = inSingleTransaction[2];
+                        try
+                        {
+                            road.findCustomer(regPlate)
+                                    .addFunds(Integer.parseInt(amount));
+
+                            System.out.println(regPlate + " : " + amount +
+                                    " added successfully");
+                        }
+                        catch(CustomerNotFoundException e)
+                        {
+                            System.out.println(regPlate + " : addFunds " +
+                                  "failed. CustomerAccount does not exist");
+                        }
+                    }
+                    else if(inSingleTransaction[0].equals("makeTrip"))
+                    {
+                        try
+                        {
+                            road.chargeCustomer(regPlate);
+
+                            System.out.println(regPlate + " : Trip completed" +
+                                    " successfully");
+                        }
+                        catch(CustomerNotFoundException e)
+                        {
+                            System.out.println(regPlate + " : makeTrip " +
+                                    "failed. CustomerAccount does not exist");
+                        }
+                        catch(InsufficientAccountBalanceException e)
+                        {
+                            System.out.println(regPlate + " : makeTrip " +
+                                    "failed. Insufficient funds");
+                        }
+
+                    }
+                }
+            }
+
+            bufferedReader.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Unable to open file '" + fileName + "'");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error reading file '" + fileName + "'");
+        }
     }
 
     public static void main(String[] args)
@@ -155,6 +232,7 @@ public class TollRoadMain
 
         TollRoad tollRoad = tollRoadMain.initialiseTollRoadFromFile();
 
+        /*
         try
         {
             CustomerAccount jose = tollRoad.findCustomer("HQ09WIJ");
@@ -170,5 +248,10 @@ public class TollRoadMain
         {
             System.out.println("customer not found");
         }
+        */
+
+        tollRoadMain.simulateFromFile(tollRoad);
+
+        System.out.println("Money Made : " + tollRoad.getMoneyMade());
     }
 }
