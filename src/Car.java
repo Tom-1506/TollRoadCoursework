@@ -1,41 +1,43 @@
-public class Car extends Vehicle
+public class Car extends Vehicle //inherits from Vehicle
 {
+    //specific variable for car that determines price at toll road
     private int numberOfSeats;
 
+    /*constructor that calls super class constructor then sets
+    the specific variable for this class: "numberOfSeats"*/
     public Car(String regPlate, String make, int numberOfSeats)
     {
-        this.regPlate = regPlate;
-        this.make = make;
+        super(regPlate, make);
         this.numberOfSeats = numberOfSeats;
     }
 
+    //Overrides method from super class Vehicle
     public int calculateBasicTripCost()
     {
         if(numberOfSeats <= 5)
-        {
+        { //if the car has 5 or less seats, toll costs £5
             return 500;
         }
         else
-        {
+        { //if it has more than 5 then toll costs £6
             return 600;
         }
     }
 
+    //Accessor for numberOfSeats
     public int getSeats()
     {
         return numberOfSeats;
     }
 
-    public void setSeats(int numberOfSeats)
-    {
-        this.numberOfSeats = numberOfSeats;
-    }
-
+    //main method used as test harness
     public static void main(String[] args)
     {
+        //make the two types of cars to test
         Car car = new Car("wk65eza", "Ford",5);
         Car biggerCar = new Car("wk66eza", "Ford", 6);
 
+        //testing methods for both cars
         System.out.println("Regular Car");
         System.out.println("*********************");
         System.out.println(car.getReg());
